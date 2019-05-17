@@ -14,15 +14,13 @@ import json
 def get_dict_from_file(file_name):
     with open(file_name, 'r', encoding='utf-8') as fp:
         term_dict  = json.load(fp)
-        fp.close()
-    return term_dict
+        return term_dict
 
 
 def save_dict(term_dict, file_name):
     with open(file_name, 'w') as fp:
         json.dump(term_dict, fp)
         fp.close()
-
 
 class DocumentRetrival:
 
@@ -88,13 +86,11 @@ class DocumentRetrival:
  
     def get_term_dict(self, file_name):
         if self.term_dict != None:
-            print('From obj')
             return self.term_dict
         if os.path.exists(file_name):
             try:
                 term_dict = get_dict_from_file(file_name)
                 assert(len(term_dict) > 5000000)
-                print('From file')
                 self.term_dict = term_dict
                 return term_dict
             except:
@@ -107,7 +103,6 @@ class DocumentRetrival:
         term_dict = self.get_wiki_dict(process_number)
         self.term_dict = term_dict
         save_dict(self.term_dict, file_name)
-        print('From dir')
         return term_dict
   
     def doc_retrive(self, term):

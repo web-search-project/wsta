@@ -1,2 +1,5 @@
 wiki-pages-text/
 *.json
+*.pickle
+__pycache__/
+*.pyc
