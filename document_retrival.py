@@ -23,13 +23,11 @@ def print_dict(adict):
         print('%s : %s' %(key, str(value)))
 
 def first_test():
-    # Download nltk
-    nltk.download('punkt')
 
     # Handling training set
     training_filename = '../data/train.json'
     training_set = get_dict_from_file(training_filename)
-    training_set = dict_slice(training_set, 0, 10)
+    training_set = dict_slice(training_set, 0, 100)
     #print_dict(training_set)
 
     evidence_docs = {}
@@ -64,10 +62,8 @@ def first_test():
     for key, value in training_set.items():
         query = text_sub(value['claim']) 
         query_ner_list = ner.getNER(query)
-        if len(query_ner_list) == 0:
-            query_ner_list = [query]
         #print("NER: %s" %(str(query_ner_list)))
-        res = tfidf.cos_similarity(query_ner_list, number = 5)
+        res = tfidf.cos_similarity(query_ner_list, number = 2)
 
         for sub_query in res.keys():
             sub_query_list = res[sub_query]
@@ -78,9 +74,9 @@ def first_test():
                     break
 
         res_dict[key] = res
-        print(res)
-        print(evidence_docs[key])
-        print('')
+        #print(res)
+        #print(evidence_docs[key])
+        #print('')
 
     # Evaluation
     precision_total = 0.0
@@ -97,12 +93,14 @@ def first_test():
         precision_total += len(doc_rt)
         for doc in doc_ground_true:
             if doc in doc_rt:
+                print(doc)
                 TP += 1
     print('TP: %d' %(TP))
     print('Precision total: %d' %(precision_total))
     print('Recall total: %d' %(recall_total))
     print('Precision: %.2f' %(TP / precision_total))
     print('Recall: %.2f' %(TP / recall_total))
+
 
 if __name__ == '__main__':
     first_test()

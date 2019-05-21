@@ -3,3 +3,4 @@ wiki-pages-text/
 *.pickle
 __pycache__/
 *.pyc
+*.csv
