@@ -12,7 +12,7 @@ def read_json(filename, save_csv=False, csv_filename=None):
     term_columns = ['claim', 'evidence', 'label']
     df = pd.DataFrame(columns=term_columns)
     train_dict = get_dict_from_file(filename)
-    train_dict = dict_slice(train_dict, 0, 1000)
+    #train_dict = dict_slice(train_dict, 0, 1000)
     for key, value in train_dict.items():
         claim = value['claim']
         label = value['label']
@@ -36,6 +36,10 @@ def read_json(filename, save_csv=False, csv_filename=None):
 
     return df
 
-
-df = read_json("../data/train.json", save_csv=True, csv_filename='train.csv')
-print(df.shape)
+def read_csv(filename):
+    df = pd.read_csv(filename)
+    print(df.shape)
+ 
+read_csv('train.csv')
+#df = read_json("../data/train.json", save_csv=True, csv_filename='train.csv')
+#print(df.shape)

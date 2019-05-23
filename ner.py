@@ -38,13 +38,16 @@ class NER:
         named_entity.add(subject)
         
         return list(named_entity)
+
+ner = NER()
+
+
 #test
 def test():
     #claim = 'Homeland is an American television spy thriller based on the Israeli television series Prisoners of War.'
     #claim = "Nikolaj Coster-Waldau worked with the Fox Broadcasting Company."
     claim = "History of art includes architecture, dance, sculpture, music, painting, poetry literature, theatre, narrative, film, photography and graphic arts."
     #claim = "Charles Marie de La Condamine was born in 1701."
-    ner = NER()
     t1 = time.time()
     e = ner.getNER(claim)
     t2 = time.time()

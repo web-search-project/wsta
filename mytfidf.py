@@ -10,8 +10,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 
-nltk.download('punkt')
-nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('stopwords')
 stop_words = stopwords.words('english')
 
 def save_model(model, model_path):

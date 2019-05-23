@@ -24,7 +24,7 @@ def save_dict(term_dict, file_name):
 
 class DocumentRetrival:
 
-    def __init__(self, wiki_dir:str, term_dict=None):
+    def __init__(self, wiki_dir, term_dict=None):
         self.wiki_dir = wiki_dir
         self.term_dict = term_dict
 
@@ -119,6 +119,19 @@ class DocumentRetrival:
             return term_str
         return None
 
+def doc_retrive(term, term_dict, wiki_dir):
+    if term_dict is not None:
+        file_number, start_pos, read_len = term_dict[term]
+        wiki_text_path = sorted(gb.glob(wiki_dir + '*.txt'))
+        path = wiki_text_path[file_number - 1]
+        dir_name, filename = os.path.split(path)
+        with open(path, 'br') as fp:
+            fp.seek(start_pos)
+            term_byte = fp.read(read_len)
+            term_str = str(term_byte, encoding='utf-8')
+            fp.close()
+        return term_str
+    return None
 
 def main():
     args = sys.argv[1:]
@@ -133,7 +146,7 @@ def main():
     print('Got dict')
     print(len(term_dict))
 
-    term_str = dr.doc_retrive('World_record_progression_4_×_100_metres_freestyle_relay')
+    term_str = dr.doc_retrive('World_record')
     print(term_str)
 
 if __name__ == '__main__':
