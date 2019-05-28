@@ -23,11 +23,10 @@ import pandas as pd
 #nltk.download('punkt')
 #nltk.download('stopwords')
 
-''' Constant in MPI '''
-#comm = MPI.COMM_WORLD
-#rank = comm.rank
-#size = comm.size
-
+'''
+This program is used to generate test set.
+This will take lots of time
+'''
 
 def dict_slice(adict, start, end):
     '''

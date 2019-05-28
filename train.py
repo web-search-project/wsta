@@ -4,7 +4,12 @@ from docutil import get_dict_from_file
 from docutil import DocumentRetrival
 from document_retrival import dict_slice
 
-label_dict = {"REFUTES" : 0, "SUPPORTS" : 1, "NOT ENOUGH INFO" : -1}
+label_dict = {"REFUTES" : 0, "SUPPORTS" : 1, "NOT ENOUGH INFO" : 2}
+
+'''
+This program is used to generate training set at first.
+
+'''
 
 def read_json(filename, save_csv=False, csv_filename=None):
     '''
