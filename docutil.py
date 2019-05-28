@@ -12,26 +12,42 @@ import gc
 import json
 
 def get_dict_from_file(file_name):
+    '''
+    Load json file to a dict.
+    '''
     with open(file_name, 'r', encoding='utf-8') as fp:
         term_dict  = json.load(fp)
         return term_dict
 
 
 def save_dict(term_dict, file_name):
+    '''
+    Save a json dict to json file
+    '''
     with open(file_name, 'w') as fp:
         json.dump(term_dict, fp)
         fp.close()
 
 class DocumentRetrival:
+    '''
+    This class is used to retrive documents from wiki texts
+    '''
 
     def __init__(self, wiki_dir, term_dict=None):
+        # wiki_dir is a string that indicates the path
         self.wiki_dir = wiki_dir
+        # term_dict is a index dict that indicates the information of a term in wiki
         self.term_dict = term_dict
 
     def is_wiki_dir_exist(self):
         return os.path.exists(self.wiki_dir)
 
     def preprocess_file(self, path):
+        '''
+        Read a wiki text and get the file number, offset and the length of term information
+
+        '''
+        # sharedDict is an index dict
         sharedDict = {}
         dir_name, filename = os.path.split(path)
         file_number = int(re.findall(r"\d{3}", filename)[0])
@@ -41,7 +57,7 @@ class DocumentRetrival:
             term_st_offset = 0
             term_length = 0
             line = fp.readline()
-            while line:
+            while line: 
 
                 # Add to dict
                 terms = line.split()
@@ -66,6 +82,9 @@ class DocumentRetrival:
         return sharedDict
 
     def get_wiki_dict(self, process_number):
+        '''
+        This method uses multiprocessing to read each wiki text and build an index of terms of wiki
+        '''
         # wiki_text_path store wiki text paths
         input_dir = self.wiki_dir
         input_dir = os.path.join(input_dir + '*.txt')
@@ -85,6 +104,10 @@ class DocumentRetrival:
         return t_dict
  
     def get_term_dict(self, file_name):
+        '''
+        Get the dict of index with the file_name, If the file exists, read the file.
+        If not, generate index by get_wiki_dict method
+        '''
         if self.term_dict != None:
             return self.term_dict
         if os.path.exists(file_name):
@@ -98,7 +121,8 @@ class DocumentRetrival:
 
         if not self.is_wiki_dir_exist():
             return None
-
+        
+        # The number of process
         process_number = int(cpu_count() / 2 + 1)
         term_dict = self.get_wiki_dict(process_number)
         self.term_dict = term_dict
@@ -106,6 +130,9 @@ class DocumentRetrival:
         return term_dict
   
     def doc_retrive(self, term):
+        '''
+        According to the term given, get the information of the term in the wiki text
+        '''
         if self.term_dict is not None:
             file_number, start_pos, read_len = self.term_dict[term]
             wiki_text_path = sorted(gb.glob(self.wiki_dir + '*.txt'))
@@ -120,6 +147,13 @@ class DocumentRetrival:
         return None
 
 def doc_retrive(term, term_dict, wiki_dir):
+    '''
+    Another method to get information of term
+    Argument:
+        term_dict: The index file
+        wiki_dir: wiki-text directory path
+    
+    '''
     if term_dict is not None:
         file_number, start_pos, read_len = term_dict[term]
         wiki_text_path = sorted(gb.glob(wiki_dir + '*.txt'))

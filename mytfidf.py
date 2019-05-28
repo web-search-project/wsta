@@ -15,16 +15,25 @@ from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
 
 def save_model(model, model_path):
+    '''
+    Use pickle to save the model
+    '''
     with open(model_path, 'wb') as fp:
         pickle.dump(model, fp)
         
 def load_model(model_path):
+    '''
+    Load model
+    '''
     if os.path.exists(model_path):
         with open(model_path, 'rb') as fp:
             return pickle.load(fp)
     return None
 
 def text_sub(text):
+    '''
+    preprocess the sentence, remove punctuation
+    '''
     text = re.sub('_', ' ', text)
     text = re.sub('-LRB-', ' ', text)
     text = re.sub('-RRB-', ' ', text)
@@ -34,6 +43,9 @@ def text_sub(text):
     return text
 
 def tokenize(text):
+    '''
+    Method to tokenize
+    '''
     # Remove unwanted structure
     text = re.sub('_', ' ', text)
     text = re.sub('-LRB-', ' ', text)
@@ -47,7 +59,8 @@ def tokenize(text):
 class Tfidf:
     def __init__(self, matrix={}, doc_ids=[]):
         self._matrix = matrix
-        self._tfidf = TfidfVectorizer(tokenizer=tokenize, stop_words='english', ngram_range=(1, 1))
+        # Build a tfidf model
+        self._tfidf = TfidfVectorizer(tokenizer=tokenize, stop_words='english', ngram_range=(1, 2))
         self.doc_ids = doc_ids
 
     @property
@@ -59,13 +72,23 @@ class Tfidf:
         return self._tfidf
 
     def fit_transform(self):
+        '''
+        Read documents to train models
+        '''
         self._matrix = self._tfidf.fit_transform(self.doc_ids)
         return self._matrix
 
     def transform(self, str_list):
+        '''
+        Transform query to vector
+        '''
         return self._tfidf.transform(str_list)
 
     def cos_similarity(self, query_list, number=3):
+        '''
+        Calculate cosine similarity between query and documents
+        And return the maximum cosine similarity documents
+        '''
         result = {}
         query_tfidf = self._tfidf.transform(query_list)
         for i, query in enumerate(query_tfidf):

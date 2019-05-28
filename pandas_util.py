@@ -7,6 +7,10 @@ from document_retrival import dict_slice
 label_dict = {"REFUTES" : 0, "SUPPORTS" : 1, "NOT ENOUGH INFO" : -1}
 
 def read_json(filename, save_csv=False, csv_filename=None):
+    '''
+    Generate csv according to json
+
+    '''
     term_dict = get_dict_from_file("./index.json")
     dr = DocumentRetrival("../wiki-pages-text/", term_dict)
     term_columns = ['claim', 'evidence', 'label']
