@@ -109,7 +109,7 @@ def test_generate_csv():
     for key, value in testing_slice_set.items():
         query = text_sub(value['claim'])
         query_ner_list = ner.getNER(query)
-        result.append(executor.submit(process_test, i, query, query_ner_list))
+        result.append(executor.submit(process_test, i, key, query, query_ner_list))
         i += 1
 
     dfs = []
@@ -122,7 +122,7 @@ def test_generate_csv():
     dataframe.to_csv("/content/gdrive/My Drive/Colab Notebooks/test5.csv")
     print(dataframe.shape)
 
-def process_test(i, query, query_ner_list):
+def process_test(i, key, query, query_ner_list):
     '''
     Each process reads one claim and search related wiki test and store in list
     '''
